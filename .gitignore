@@ -1,0 +1,85 @@
+# Python
+*.pyc
+__pycache__/
+
+# Environment
+.env
+venv/
+.venv/
+env/
+.venv/
+venv.bak/
+
+# Flask
+instance/
+.mypy_cache/
+.pytest_cache/
+
+# SQLAlchemy
+*.db
+*.sqlite3
+
+# Pytest
+.cache
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Docker
+*.log
+*.pid
+*.sock
+*.lock
+*.swp
+docker-compose.override.yml
+
+# Virtual environment
+sBlogEnv/
+pip-wheel-metadata/
+*.pyo
+*.pyd
+*.pdb
+pip-log.txt
+pip-delete-this-directory.txt
+__pypackages__/
+
+# Migrations
+migrations/
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# pyenv
+.python-version
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs
+.idea/
+*.sublime-project
+*.sublime-workspace

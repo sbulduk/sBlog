@@ -1,0 +1,7 @@
+-> Cleanup Scripts - Run this on Unix/Mac Terminal
+#!/bin/bash
+find . -type d -name '__pycache__' -exec rm -r {} +
+
+-> Clean _pycache.bat - Run this on Windows CommanPrompt
+@echo off
+for /d /r %%i in (__pycache__) do @if exist "%%i" rd /s /q "%%i"
