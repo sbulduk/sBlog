@@ -5,3 +5,12 @@ find . -type d -name '__pycache__' -exec rm -r {} +
 -> Clean _pycache.bat - Run this on Windows CommanPrompt
 @echo off
 for /d /r %%i in (__pycache__) do @if exist "%%i" rd /s /q "%%i"
+
+-> Database Migration
+flask db init
+flask db migrate -m "Initial migration"
+flask db upgrade
+
+-> alembic.ini configuration
+script_location=migrations
+sqlalchemy.url = mssql+pyodbc://sa:Sbulduk2023!@192.168.10.22:1433/sBlog?driver=ODBC+Driver+17+for+SQL+Server

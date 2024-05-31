@@ -12,20 +12,22 @@ def ListPosts():
 
 @PostsBp.route("/<postId>",methods=["POST"])
 def GetPostById(postId):
-    selectedPost=postServices.GetPostById(postId)
-    postwithComments={"Post":selectedPost}
-    # postResult.append({"post":selectedPost})
-    commentList=postServices.GetCommentsByPostId(postId)
-    allCommentstoPost=[]
-    if(commentList):
-        for comment in commentList:
-            # allCommentstoPost.append({"comment":comment})
-            commentData={"Comment":comment}
-            subCommentList=postServices.GetCommentsByCommentId(comment.commentId)
-            if(subCommentList):
-                commentData["Subcomment"]=subCommentList
-    postwithComments["Comments"]=commentData
-    return postwithComments
+    postData=postServices.GetPostwithComments(postId)
+    if postData:
+        return jsonify({"success":True,"data":postData}),200
+    return jsonify({"success":False,"data":"No posts found"}),404
+
+    # selectedPost=postServices.GetPostById(postId)
+    # postwithComments={"Post":selectedPost}
+    # commentList=postServices.GetCommentsByPostId(postId)
+    # if(commentList):
+    #     for comment in commentList:
+    #         commentData={"Comment":comment}
+    #         subCommentList=postServices.GetCommentsByCommentId(comment.commentId)
+    #         if(subCommentList):
+    #             commentData["Subcomment"]=subCommentList
+    # postwithComments["Comments"]=commentData
+    # return postwithComments
 
 
 @PostsBp.route("/newpost",methods=["POST"])
