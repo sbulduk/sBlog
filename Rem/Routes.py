@@ -19,8 +19,8 @@ def ForgotPassword():
         resetToken=str(uuid.uuid4())
         userServices.UpdateUser(user.Id,ResetToken=resetToken)
         remServices.SendResetEmail(email,resetToken)
-        return jsonify({"success":True,"message":f"Reset token sent to your email: {email}"}),200
-    return jsonify({"success":False,"message":f"E-mail not found"}),404
+        return jsonify({"success":True,"msg":f"Reset token sent to your email: {email}"}),200
+    return jsonify({"success":False,"msg":f"E-mail not found"}),404
 
 @RemBp.route("/resetpassword",methods=["POST"])
 def ResetPassword():
@@ -31,5 +31,5 @@ def ResetPassword():
     if(user):
         userServices.UpdateUser(user.Id,Password=newPassword,ResetToken=None)
         # userServices.UpdateUser(user.Id,ResetToken=None)
-        return jsonify({"success":True,"message":f"Reset token sent to your email"}),200
-    return jsonify({"success":False,"message":f"Invalid or expired password"}),400
+        return jsonify({"success":True,"msg":f"Reset token sent to your email"}),200
+    return jsonify({"success":False,"msg":f"Invalid or expired password"}),400

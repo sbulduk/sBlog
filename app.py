@@ -1,5 +1,4 @@
-import os
-os.environ["PYTHONDONTWRITEBYTECODE"]="1"
+from dotenv import load_dotenv
 from flask import  Flask
 from Core.Config import Config
 from Core.Database import InitDB
@@ -9,6 +8,8 @@ from flask_cors import CORS
 from Auth.Routes import AuthBp
 from Posts.Routes import PostsBp
 from Rem.Routes import RemBp
+
+load_dotenv()
 
 def CreateApp():
     app=Flask(__name__)

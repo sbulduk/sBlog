@@ -3,10 +3,12 @@ from Posts.Models import Post,Comment,Tag
 
 class Services(object):
     def GetPosts(self):
-        return Post.query.filter_by(IsActive=True).all()
+        postList=Post.query.filter_by(IsActive=True).all()
+        return [post.ConvertToDict() for post in postList]
     
     def GetPostById(self,postId):
-        return Post.query.filter_by(PostId=postId,IsActive=True).first()
+        post=Post.query.filter_by(PostId=postId,IsActive=True).first()
+        return post.ConvertToDict()
 
     def CreatePost(self,title,body,userId):
         newPost=Post(Title=title,Body=body,UserId=userId)
@@ -30,10 +32,12 @@ class Services(object):
         db.session.commit()
 
     def GetCommentsByPostId(self,postId):
-        return Comment.query.filter_by(PostId=postId,IsActive=True).all()
+        commentsofPost=Comment.query.filter_by(PostId=postId,IsActive=True).all()
+        return [comment.ConvertToDict() for comment in commentsofPost]
 
     def GetCommentsByParentCommentId(self,parentCommentId):
-        return Comment.query.filter_by(ParentCommentId=parentCommentId,IsActive=True).all()
+        commentsofComment=Comment.query.filter_by(ParentCommentId=parentCommentId,IsActive=True).all()
+        return [comment.ConvertToDict() for comment in commentsofComment]
 
     def CreateComment(self,body,postId,userId=None,parentCommentId=None):
         newComment=Comment(Body=body,PostId=postId,UserId=userId,ParentCommentId=parentCommentId)

@@ -1,3 +1,4 @@
+from typing import List,Dict,Optional,Union
 from Core.Database import db
 from Core.Utils import HashPassword
 from Auth.Models import User,Role,UserRole
@@ -5,11 +6,13 @@ from flask_jwt_extended import create_access_token
 import datetime
 
 class Services(object):
-    def GetAllUsers(self):  #------------------
-        return User.query.filter_by(IsActive=True).all()
+    def GetAllUsers(self)->List[Dict]:
+        userList=User.query.filter_by(IsActive=True).all()
+        return [user.ConvertToDict() for user in userList]
 
     def GetUserById(self,userId:str)->User:
-        return User.query.filter_by(Id=userId,IsActive=True).first()
+        user=User.query.filter_by(Id=userId,IsActive=True).first()
+        return user.ConvertToDict()
     
     def GetUserByEmail(self,email:str)->User:
         return User.query.filter_by(Email=email,IsActive=True).first()
@@ -20,14 +23,14 @@ class Services(object):
         db.session.add(newUser)
         db.session.commit()
 
-    def AuthenticateUser(self,username:str,password:str):   #------------------
+    def AuthenticateUser(self,username:str,password:str)->Optional[str]:
         user=User.query.filter_by(Username=username).first()
         if(user and user.Password==HashPassword(password) and user.IsActive):
             expires=datetime.timedelta(hours=1)
             return create_access_token(identity=user.Id,expires_delta=expires)
         return None
 
-    def UpdateUser(self,userId:str,**kwargs):   #------------------
+    def UpdateUser(self,userId:str,**kwargs)->None:
         user=self.GetUserById(userId)
         for key,value in kwargs.items():
             if(key=="Password"):
@@ -56,7 +59,7 @@ class Services(object):
         db.session.add(newRole)
         db.session.commit()
 
-    def UpdateRole(self,roleId:str,**kwargs)->None: #------------------
+    def UpdateRole(self,roleId:str,**kwargs)->None:
         role=self.GetRoleById(roleId)
         for key,value in kwargs.items():
             setattr(role,key,value)
@@ -75,20 +78,20 @@ class Services(object):
             userRole.IsActive=False
         db.session.commit()
 
-    def GetUserRoles(self,userId:str):  #------------------
+    def GetUserRoles(self,userId:str)->List[str]:
         user=self.GetUserById(userId)
         if(user):
             return [Role.Name for role in user.Roles]
         return []
     
-    def GetUserswithRole(self,roleName:str):    #------------------
+    def GetUserswithRole(self,roleName:str)->List[Dict]:
         role=self.GetRoleByName(roleName)
         if(role):
             return [User.Username for user in role.Users]
         return []
     
-    def UserHasRole(self,userId:str,roleName:str):  #------------------
+    def UserHasRole(self,userId:str,roleName:str)->bool:
         user=self.GetUserById(userId)
         if(user):
             return any(Role.Name==roleName for role in user.Roles)
-        return []
+        return False
